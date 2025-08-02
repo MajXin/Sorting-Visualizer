@@ -1,4 +1,3 @@
-import TestConnection from './components/TestConnection'
 import './App.css'
 
 function App() {

@@ -8,16 +8,39 @@ const VisualizationArea = ({
 }) => {
   // TODO: Implement these helper functions
   const getBarHeight = (value) => {
-    // Calculate bar height based on value
-    // Consider: Max height, scaling factor
+    const maxHeight = 226; // 256px (h-64) - 30px padding
+    const minHeight = 5;   // Minimum bar height
+    
+    // Find maximum value in array for scaling
+    const maxValue = Math.max(...array);
+    
+    // Calculate scaling factor
+    const scale = (maxHeight - minHeight) / maxValue;
+    
+    // Calculate height and ensure it's at least minHeight
+    const height = Math.max(minHeight, value * scale);
+    
+    return `${height}px`;
   };
 
   const getBarColor = (index) => {
-    // Return appropriate color based on index state:
-    // - If index is being compared
-    // - If index is being swapped
-    // - If index is sorted
-    // - Default state
+    // Check if the bar is being compared
+    if (comparingIndices.includes(index)) {
+      return '#eab308'; // yellow-500
+    }
+    
+    // Check if the bar is being swapped
+    if (swappingIndices.includes(index)) {
+      return '#ef4444'; // red-500
+    }
+    
+    // Check if the bar is in its sorted position
+    if (sortedIndices.includes(index)) {
+      return '#22c55e'; // green-500
+    }
+    
+    // Default state
+    return '#3b82f6'; // blue-500
   };
 
   return (
@@ -27,8 +50,8 @@ const VisualizationArea = ({
           key={`${index}-${value}`}
           className="w-4 bg-blue-500 transition-all duration-200"
           style={{
-            height: '/* TODO: Calculate height */',
-            backgroundColor: '/* TODO: Get color based on state */'
+            height: getBarHeight(value),
+            backgroundColor: getBarColor(index)
           }}
         />
       ))}
